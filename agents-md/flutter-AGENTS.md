@@ -1,250 +1,182 @@
-# AGENTS.md - Flutter Project
+# AGENTS.md - Flutter Project Contributor Guide
 
-## はじめに
-このプロジェクトはFlutter、Dart、Riverpodを使用したクロスプラットフォームアプリです。OpenAI Codexは以下のガイドラインに従ってタスクを実行してください。
+Welcome to this Flutter project repository. This file contains the main points for new contributors and AI assistants working with Flutter/Dart projects.
 
-## 1. コードベースのナビゲーションとアーキテクチャ
+## Repository overview
+- **Source code**: `lib/` contains the main application code organized by features.
+- **Core**: `lib/core/` for constants, errors, utilities, and themes.
+- **Data layer**: `lib/data/` for models, repositories, and external services.
+- **Domain layer**: `lib/domain/` for entities, use cases, and business logic.
+- **Presentation**: `lib/presentation/` for UI components, pages, and state management.
+- **Tests**: `test/` with unit, widget, and integration test directories.
+- **Assets**: `assets/` for images, icons, fonts, and other static resources.
 
-### ディレクトリ構造
-```
-project-root/
-├── lib/
-│   ├── core/
-│   │   ├── constants/   # 定数定義
-│   │   ├── errors/      # エラークラス
-│   │   ├── utils/       # ユーティリティ
-│   │   └── themes/      # テーマ設定
-│   ├── data/
-│   │   ├── models/      # データモデル
-│   │   ├── repositories/ # リポジトリ実装
-│   │   └── services/    # 外部API通信
-│   ├── domain/
-│   │   ├── entities/    # ビジネスエンティティ
-│   │   ├── repositories/ # リポジトリインターフェース
-│   │   └── usecases/    # ユースケース
-│   ├── presentation/
-│   │   ├── pages/       # 画面ウィジェット
-│   │   ├── widgets/     # 再利用可能ウィジェット
-│   │   └── providers/   # Riverpod プロバイダー
-│   └── main.dart        # アプリエントリーポイント
-├── test/
-│   ├── unit/            # 単体テスト
-│   ├── widget/          # ウィジェットテスト
-│   └── integration/     # 統合テスト
-├── assets/
-│   ├── images/          # 画像アセット
-│   ├── icons/           # アイコン
-│   └── fonts/           # フォント
-└── pubspec.yaml         # 依存関係設定
-```
+## Local workflow
+1. Set up Flutter environment and dependencies:
+   ```bash
+   flutter doctor             # Check Flutter installation
+   flutter pub get            # Get dependencies
+   flutter pub run build_runner build # Generate code (if using code generation)
+   ```
 
-### アーキテクチャパターン
-- Clean Architecture
-- MVVM パターン
-- Repository パターン
-- Riverpod による状態管理
-- Feature-First ディレクトリ構成
+2. Format, analyze and check your changes:
+   ```bash
+   dart format .              # Format Dart code
+   dart analyze               # Static analysis
+   flutter test               # Run all tests
+   ```
 
-## 2. コードスタイルとフォーマット
+3. Run the application:
+   ```bash
+   flutter run                # Run on connected device/emulator
+   flutter run -d chrome      # Run web version
+   flutter run --release      # Run in release mode
+   ```
 
-### Dart スタイル（Effective Dart準拠）
-- dart format でフォーマット
-- dart analyze でリント実行
-- 命名規則:
-  - クラス: PascalCase（UserRepository）
-  - ファイル名: snake_case（user_repository.dart）
-  - 関数・変数: camelCase（getUserData）
-  - 定数: lowerCamelCase（defaultPadding）
-  - プライベート: \_underscore（\_privateMethod）
+4. Build for production:
+   ```bash
+   flutter build apk          # Android APK
+   flutter build ios          # iOS build
+   flutter build web          # Web build
+   flutter build windows      # Windows build (if configured)
+   ```
 
-### Flutter Widget 規則
-- Stateless Widget 優先使用
-- const コンストラクタの活用
-- SingleChildScrollView の適切な使用
-- SafeArea の考慮
-
-### 実行コマンド
+## Testing guidelines
+Use Flutter's built-in testing framework with comprehensive coverage:
 ```bash
-dart format .          # Dartフォーマット
-dart analyze          # 静的解析
-flutter pub get       # 依存関係取得
+flutter test --coverage      # Generate coverage report
+flutter test test/unit/       # Run unit tests only
+flutter test test/widget/     # Run widget tests only
+flutter test integration_test/ # Run integration tests
 ```
+- Test all public methods and critical user flows
+- Use widget tests for UI component verification
+- Implement golden tests for visual regression testing
+- Test state management (Riverpod providers)
+- Include integration tests for complete user scenarios
 
-## 3. テストプロトコル
+## Style notes
+- Follow Effective Dart guidelines for code style.
+- Use `const` constructors wherever possible for performance.
+- Prefer Stateless widgets over Stateful when state is not needed.
+- Use meaningful names following Dart naming conventions.
+- Implement proper error handling with try-catch blocks.
+- Use `async`/`await` for asynchronous operations.
 
-### テスト構成
-- flutter_test：フレームワーク標準
-- mockito：モック作成
-- golden_toolkit：UI テスト
-- integration_test：統合テスト
-
-### テスト規則
-- 全 public メソッドの単体テスト
-- 重要な UI ウィジェットのテスト
-- ユースケースの中心的なテスト
-- Golden test による UI 回帰テスト
-
-### 実行コマンド
-```bash
-flutter test           # 全テスト実行
-flutter test --coverage # カバレッジ測定
-flutter test integration_test/ # 統合テスト
-flutter test test/widget/ # ウィジェットテスト
-```
-
-## 4. ビルドプロセスと環境設定
-
-### 環境設定
-- .env ファイルで管理（flutter_dotenv）
-- flavor による環境分割
-- 設定ファイル（config/app_config.dart）
-
-### 実行コマンド
-```bash
-# 開発環境
-flutter run            # デバッグモードで起動
-flutter run --release  # リリースモードで起動
-flutter run -d chrome  # Web版で起動
-
-# ビルド
-flutter build apk      # Android APK
-flutter build ios      # iOS Build
-flutter build web      # Web Build
-```
-
-## 5. コミットメッセージ規約
-
-### フォーマット（Conventional Commits）
+## Commit message format
+Use conventional commit format:
 ```
 type(scope): description
 
-feat(auth): implement biometric login
+Examples:
+feat(auth): implement biometric authentication
 fix(ui): resolve overflow issue on small screens
-style(widgets): update button theme consistency  
-refactor(state): migrate to Riverpod 2.0
-test(models): add user model serialization tests
-docs(readme): update installation instructions
+perf(list): optimize ListView performance with builder
+refactor(state): migrate to Riverpod 2.0 providers
+test(models): add comprehensive user model tests
+style(widgets): update theme consistency across app
 ```
 
-## 6. プルリクエスト（PR）指示
+## Pull request expectations
+PRs should include:
+- **Summary**: Clear description of functionality and user experience changes
+- **Screenshots**: Visual proof on multiple platforms (iOS/Android/Web)
+- **Performance impact**: Frame rate and memory usage considerations
+- **Platform compatibility**: Testing across target platforms
+- **Accessibility**: Screen reader and navigation accessibility verification
 
-### PRタイトル形式
-- `[feat] Add push notification support`
-- `[fix] Resolve keyboard overlap issue`
+Before submitting, ensure:
+- [ ] All tests pass (`flutter test`)
+- [ ] No analyzer warnings (`dart analyze`)
+- [ ] Code is formatted (`dart format .`)
+- [ ] App builds successfully on target platforms
+- [ ] UI is responsive across different screen sizes
+- [ ] Accessibility features work properly
+- [ ] Performance is acceptable (60fps target)
 
-### PR説明テンプレート
-```markdown
-## 変更内容
-- 実装・修正された機能の詳細
-- UI/UX の変更点
+## What reviewers look for
+- **Widget architecture**: Proper widget composition and separation of concerns.
+- **State management**: Effective use of Riverpod providers and state handling.
+- **Performance**: Efficient rendering and memory management.
+- **Platform compliance**: Following Material Design and Cupertino guidelines.
+- **Accessibility**: Proper Semantics widget usage and navigation support.
+- **Code quality**: Null safety compliance and error handling.
 
-## スクリーンショット
-- iOS/Android での表示確認
-- Web（該当する場合）
-- 異なる画面サイズでの確認
+## Flutter architecture guidelines
+- Follow Clean Architecture principles with clear layer separation.
+- Use Feature-First directory structure for scalability.
+- Implement Repository pattern for data access abstraction.
+- Apply MVVM pattern with proper separation of concerns.
+- Use dependency injection for better testability.
 
-## テスト
-- 実施した動作テスト
-- 対象プラットフォーム確認
-- パフォーマンステスト
+## Widget best practices
+- Prefer composition over inheritance for widget design.
+- Use `const` constructors to improve performance.
+- Implement proper `Key` usage for widget identity.
+- Create reusable widgets with clear, focused responsibilities.
+- Use `Builder` widgets to manage context scope appropriately.
+- Implement proper disposal of resources in `dispose()` methods.
 
-## 破壊的変更
-- [ ] 既存 API の変更あり
-- [ ] データモデルの変更あり
+## Riverpod state management
+- Design providers with appropriate granularity.
+- Use `StateProvider` for simple state, `StateNotifierProvider` for complex state.
+- Apply `autodispose` modifier to prevent memory leaks.
+- Use `family` modifier for parameterized providers.
+- Implement proper error handling in providers.
+- Test providers in isolation with appropriate mocking.
 
-## チェックリスト
-- [ ] Android でのテスト完了
-- [ ] iOS でのテスト完了  
-- [ ] 単体テスト通過
-- [ ] アクセシビリティ確認
-- [ ] パフォーマンス確認
+## Performance optimization
+- Use `ListView.builder` for large lists instead of `ListView`.
+- Implement `RepaintBoundary` for expensive widgets.
+- Apply `AutomaticKeepAliveClientMixin` for preserving state.
+- Use `ValueListenableBuilder` for granular rebuilds.
+- Implement image caching and optimization strategies.
+- Monitor performance with Flutter Inspector and DevTools.
 
-## Closes
-- Fixes #issue_number
-```
+## Platform-specific considerations
+- Follow Material Design guidelines for Android.
+- Implement Cupertino design patterns for iOS.
+- Use `Platform.isIOS` and `Platform.isAndroid` for platform-specific code.
+- Implement proper platform channels for native functionality.
+- Test on real devices, not just simulators/emulators.
+- Handle platform-specific permissions appropriately.
 
-## 7. プロジェクト全般のガイドライン
+## Data management
+- Use `json_annotation` with `json_serializable` for JSON serialization.
+- Implement proper local storage with Hive or shared_preferences.
+- Use HTTP clients with proper error handling and timeouts.
+- Apply caching strategies for improved performance.
+- Handle offline scenarios gracefully.
+- Implement proper data validation and sanitization.
 
-### Flutter ベストプラクティス
-- Widget の適切な分割
-- const コンストラクタ使用
-- build メソッドの軽量化
-- Key の適切な使用
-- MediaQuery の効率的使用
+## UI/UX guidelines
+- Follow platform design guidelines (Material/Cupertino).
+- Implement responsive design for different screen sizes.
+- Support both light and dark themes.
+- Use proper spacing and typography from design system.
+- Implement smooth animations and transitions.
+- Provide proper loading states and error handling.
 
-### Riverpod 状態管理
-- Provider の適切な粒度
-- StateProvider/StateNotifierProvider の使い分け
-- ref.watch/ref.read の使い分け
-- autodispose の活用
-- familyProvider による引数渡し
+## Accessibility best practices
+- Use `Semantics` widget for screen reader support.
+- Implement proper focus management and navigation.
+- Ensure sufficient color contrast ratios.
+- Provide alternative text for images and icons.
+- Test with TalkBack (Android) and VoiceOver (iOS).
+- Support dynamic font sizing and high contrast modes.
 
-### パフォーマンス最適化
-- 不要な rebuild 防止
-- ListView.builder の使用
-- RepaintBoundary の活用
-- Image キャッシュ戦略
-- AnimationController の適切な dispose
+## Security considerations
+- Validate all user inputs and API responses.
+- Use secure storage for sensitive data (flutter_secure_storage).
+- Implement proper authentication and session management.
+- Protect against common vulnerabilities (XSS, injection attacks).
+- Use HTTPS for all network communications.
+- Implement proper certificate pinning for production apps.
 
-### データ管理
-- JSON シリアル化（json_annotation）
-- Hive/Shared Preferences での永続化
-- Repository パターンによる抽象化
-- エラーハンドリング戦略
-
-### UI/UX
-- Material Design / Cupertino 準拠
-- レスポンシブデザイン
-- Dark mode 対応
-- アクセシビリティ（Semantics）
-- 適切なローディング表示
-
-## 8. レビューチェックリスト（Codex PR用）
-
-### Flutter 特有の確認事項
-- [ ] Widget tree が適切に構成されている
-- [ ] メモリリークが発生していない
-- [ ] build メソッドが効率的に記述されている
-- [ ] 適切な Key が設定されている
-
-### Dart 言語
-- [ ] null safety が適切に実装されている
-- [ ] async/await が正しく使われている
-- [ ] Stream の適切な使用
-- [ ] Extension methods の活用
-
-### Riverpod 状態管理
-- [ ] Provider が適切に設計されている
-- [ ] 状態の依存関係が正しい
-- [ ] autodispose が適切に使われている
-- [ ] ref.invalidate の適切な使用
-
-### UI/レスポンシブ
-- [ ] 異なる画面サイズで正常動作
-- [ ] オーバーフローが発生していない
-- [ ] 適切な padding/margin 設定
-- [ ] SafeArea が考慮されている
-
-### パフォーマンス
-- [ ] 不要な rebuild が発生していない
-- [ ] 重い処理が isolate で実行されている
-- [ ] 画像が適切に最適化されている
-- [ ] アニメーションが滑らか
-
-### テスト
-- [ ] Widget の主要な機能にテスト
-- [ ] ユースケースにテスト
-- [ ] Golden test の更新
-- [ ] Edge case のテスト
-
-### アクセシビリティ
-- [ ] Semantics が適切に設定されている
-- [ ] ボタンに十分なタップ面積
-- [ ] コントラスト比が適切
-- [ ] スクリーンリーダー対応
-
-### プラットフォーム別
-- [ ] Android Material Design 準拠
-- [ ] iOS Cupertino Design 準拠
-- [ ] プラットフォーム間の一貫性
-- [ ] ネイティブ機能の適切な使用
+## Testing strategies
+- Write unit tests for business logic and utility functions.
+- Create widget tests for UI components and user interactions.
+- Implement integration tests for complete user flows.
+- Use golden tests for visual regression testing.
+- Mock external dependencies appropriately.
+- Test error scenarios and edge cases thoroughly.

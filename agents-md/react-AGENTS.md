@@ -1,223 +1,159 @@
-# AGENTS.md - React Project
+# AGENTS.md - React Project Contributor Guide
 
-## はじめに
-このプロジェクトはReact、TypeScript、Viteを使用したモダンなフロントエンドアプリケーションです。OpenAI Codexは以下のガイドラインに従ってタスクを実行してください。
+Welcome to this React project repository. This file contains the main points for new contributors and AI assistants working with React/TypeScript projects.
 
-## 1. コードベースのナビゲーションとアーキテクチャ
+## Repository overview
+- **Source code**: `src/` contains components, hooks, services, and utilities.
+- **Components**: `src/components/` with ui and feature-specific directories.
+- **Hooks**: `src/hooks/` for custom React hooks and reusable logic.
+- **Services**: `src/services/` for API communication and external integrations.
+- **State**: `src/store/` for global state management (Zustand/Redux).
+- **Tests**: `tests/` with component, integration, and e2e test files.
+- **Types**: `src/types/` for TypeScript type definitions.
 
-### ディレクトリ構造
-```
-project-root/
-├── src/
-│   ├── components/
-│   │   ├── ui/          # 再利用可能UIコンポーネント
-│   │   └── features/    # 機能別コンポーネント
-│   ├── hooks/           # カスタムフック
-│   ├── services/        # API通信・外部サービス
-│   ├── store/           # 状態管理（Zustand/Redux）
-│   ├── types/           # TypeScript型定義
-│   ├── utils/           # ユーティリティ関数
-│   ├── styles/          # グローバルスタイル
-│   ├── App.tsx          # メインアプリコンポーネント
-│   └── main.tsx         # エントリーポイント
-├── public/              # 静的ファイル
-└── tests/
-    ├── __mocks__/       # モックファイル
-    └── setup.ts         # テスト設定
-```
+## Local workflow
+1. Install dependencies and set up environment:
+   ```bash
+   npm install               # Install dependencies
+   cp .env.example .env      # Set up environment variables
+   npm run dev               # Start development server
+   ```
 
-### アーキテクチャパターン
-- 関数コンポーネント + フック
-- コンポーネント合成パターン
-- カスタムフックによるロジック抽出
-- Context API + Zustand による状態管理
+2. Format, lint and type-check your changes:
+   ```bash
+   npm run format            # Prettier formatting
+   npm run lint              # ESLint checking
+   npm run type-check        # TypeScript checking
+   ```
 
-## 2. コードスタイルとフォーマット
+3. Run the tests:
+   ```bash
+   npm test                  # Run all tests
+   npm run test:watch        # Watch mode for development
+   npm run test:ui           # Vitest UI interface
+   npm run test:e2e          # End-to-end tests with Playwright
+   npm run coverage          # Generate coverage report
+   ```
 
-### TypeScript/JavaScript
-- Prettier でフォーマット
-- ESLint + @typescript-eslint で構文チェック
-- 厳密な TypeScript 設定
-- 命名規則:
-  - コンポーネント: PascalCase（UserProfile）
-  - ファイル名: kebab-case（user-profile.tsx）
-  - 関数・変数: camelCase（getUserData）
-  - 定数: UPPER_SNAKE_CASE（API_ENDPOINTS）
-  - フック: useXxx（useUserData）
+4. Build and analyze:
+   ```bash
+   npm run build             # Production build
+   npm run preview           # Preview production build
+   npm run analyze           # Bundle size analysis
+   ```
 
-### React 規則
-- 関数コンポーネント優先
-- デストラクチャリング活用
-- 条件付きレンダリングの適切な実装
-- JSX内での適切な key 属性設定
-
-### 実行コマンド
+## Testing guidelines
+Use Vitest with React Testing Library for component testing:
 ```bash
-npm run format     # Prettier実行
-npm run lint       # ESLint実行
-npm run type-check # TypeScriptチェック
+npm run test:watch          # Interactive watch mode
+npm run test:coverage       # Coverage report with thresholds
+npm run test:ui             # Visual test interface
 ```
+- Test user interactions rather than implementation details
+- Use MSW (Mock Service Worker) for API mocking
+- Write tests for custom hooks in isolation
+- Include accessibility tests with testing-library/jest-dom
+- Test error boundaries and loading states
 
-## 3. テストプロトコル
+## Style notes
+- Use functional components with hooks exclusively.
+- Prefer custom hooks for complex stateful logic.
+- Use destructuring for props and state access.
+- Implement proper key props for list items.
+- Use TypeScript strictly with minimal `any` usage.
+- Follow React naming conventions: PascalCase for components, camelCase for functions.
 
-### テスト構成
-- Vitest：テストランナー
-- React Testing Library：コンポーネントテスト
-- MSW (Mock Service Worker)：API モック
-- Playwright：E2Eテスト
-
-### テスト規則
-- 全 public コンポーネントにテスト作成
-- ユーザーの操作フローを重視したテスト
-- カスタムフックの単体テスト実装
-- 重要なユーザーシナリオの E2E テスト
-
-### 実行コマンド
-```bash
-npm test           # 全テスト実行
-npm run test:watch # ウォッチモード
-npm run test:ui    # Vitest UI
-npm run test:e2e   # E2Eテスト
-npm run coverage   # カバレッジ確認
-```
-
-## 4. ビルドプロセスと環境設定
-
-### 環境変数
-- `.env` ファイルで管理
-- `VITE_` プレフィックス必須（Vite）
-- 環境別設定（development/production）
-
-### 実行コマンド
-```bash
-npm run dev        # 開発サーバー起動
-npm run build      # 本番ビルド
-npm run preview    # ビルド結果プレビュー
-npm run analyze    # バンドルサイズ分析
-```
-
-## 5. コミットメッセージ規約
-
-### フォーマット（Conventional Commits）
+## Commit message format
+Use conventional commit format:
 ```
 type(scope): description
 
-feat(auth): add user login form
-fix(ui): resolve button hover state issue
-style(components): update spacing consistency
-refactor(hooks): optimize useUserData performance
-test(auth): add login form validation tests
-docs(readme): update component usage examples
+Examples:
+feat(auth): add user authentication with context
+fix(ui): resolve button hover state accessibility issue
+perf(components): optimize UserList rendering performance
+refactor(hooks): extract common API logic to useApi hook
+test(auth): add comprehensive login form validation tests
+style(components): update design system spacing tokens
 ```
 
-## 6. プルリクエスト（PR）指示
+## Pull request expectations
+PRs should include:
+- **Summary**: Clear description of functionality and user impact
+- **Screenshots/Videos**: Visual proof of UI changes (before/after)
+- **Performance impact**: Bundle size changes and runtime performance
+- **Accessibility**: Keyboard navigation and screen reader compatibility
+- **Responsive design**: Mobile and desktop compatibility verification
 
-### PRタイトル形式
-- `[feat] Add shopping cart functionality`
-- `[fix] Resolve mobile navigation issue`
+Before submitting, ensure:
+- [ ] All tests pass (`npm test`)
+- [ ] TypeScript compilation succeeds (`npm run type-check`)
+- [ ] ESLint passes with no warnings (`npm run lint`)
+- [ ] Components are accessible (keyboard navigation, ARIA attributes)
+- [ ] Responsive design works on different screen sizes
+- [ ] No console errors or warnings in browser
+- [ ] Performance is not significantly degraded
 
-### PR説明テンプレート
-```markdown
-## 変更内容
-- 実装・修正された機能の詳細
+## What reviewers look for
+- **Component design**: Proper separation of concerns and reusability.
+- **Hook usage**: Correct implementation of React hooks and dependencies.
+- **Performance**: Efficient rendering with proper memoization strategies.
+- **Accessibility**: WCAG compliance and keyboard navigation.
+- **User experience**: Intuitive interactions and error handling.
+- **Type safety**: Comprehensive TypeScript usage with proper prop types.
 
-## スクリーンショット/動画
-- UI変更の場合は必須
-- Before/After の比較
+## React best practices
+- Use functional components with hooks exclusively.
+- Implement proper dependency arrays for useEffect, useMemo, useCallback.
+- Avoid prop drilling by using Context API or state management libraries.
+- Use React.memo for expensive components to prevent unnecessary re-renders.
+- Implement proper error boundaries for error handling.
+- Use Suspense for loading states with lazy-loaded components.
 
-## テスト
-- 実施したテスト内容
-- カバレッジ変化
+## State management guidelines
+- Prefer local state (useState) for component-specific data.
+- Use useReducer for complex state logic.
+- Apply Context API for moderately shared state.
+- Use Zustand or Redux for complex global state.
+- Implement React Query/SWR for server state management.
+- Keep state as close to where it's used as possible.
 
-## Lighthouse スコア（該当する場合）
-- パフォーマンス
-- アクセシビリティ
-- ベストプラクティス
-- SEO
+## Performance optimization
+- Use React.memo to prevent unnecessary re-renders.
+- Implement useMemo and useCallback judiciously (not everywhere).
+- Use lazy loading with React.lazy for route-based code splitting.
+- Optimize images with proper formats and lazy loading.
+- Implement virtual scrolling for large lists.
+- Monitor bundle size and remove unused dependencies.
 
-## チェックリスト
-- [ ] テスト通過確認
-- [ ] 型エラー解消確認
-- [ ] レスポンシブ対応確認
-- [ ] アクセシビリティ確認
-- [ ] ブラウザ互換性確認
+## Accessibility guidelines
+- Use semantic HTML elements (button, nav, main, etc.).
+- Implement proper ARIA attributes for complex components.
+- Ensure keyboard navigation works for all interactive elements.
+- Maintain proper color contrast ratios (4.5:1 minimum).
+- Provide alternative text for images and icons.
+- Test with screen readers and keyboard-only navigation.
 
-## Breaking Changes
-- [ ] 破壊的変更あり（詳細説明）
+## Custom hooks best practices
+- Extract reusable logic into custom hooks.
+- Use proper hook naming convention (useXxx).
+- Return objects for multiple values, arrays for related values.
+- Handle cleanup in useEffect return functions.
+- Implement proper error handling within hooks.
+- Test custom hooks in isolation.
 
-## Closes
-- Fixes #issue_number
-```
+## Component organization
+- Create reusable UI components in `components/ui/`.
+- Organize feature-specific components in `components/features/`.
+- Use composition patterns over inheritance.
+- Implement proper prop interfaces with TypeScript.
+- Keep components focused on a single responsibility.
+- Extract complex logic to custom hooks or utility functions.
 
-## 7. プロジェクト全般のガイドライン
-
-### React ベストプラクティス
-- 関数コンポーネント優先使用
-- Hooks の rules 遵守
-- 適切な依存配列設定（useEffect, useMemo, useCallback）
-- コンポーネントの責務分離
-- prop drilling 回避（Context/状態管理ライブラリ）
-
-### パフォーマンス最適化
-- React.memo による不要な再レンダリング防止
-- useMemo/useCallback の適切な使用
-- lazy loading（React.lazy）の実装
-- バーチャルスクロール（長いリスト）
-- 画像最適化とlazyロード
-
-### 状態管理
-- ローカル状態優先（useState）
-- 複雑な状態は useReducer
-- グローバル状態は Context API または Zustand
-- サーバー状態は React Query/SWR
-
-### アクセシビリティ
-- セマンティックHTML使用
-- ARIA属性の適切な設定
-- キーボードナビゲーション対応
-- スクリーンリーダー対応
-- 色のコントラスト比遵守
-
-### エラーハンドリング
-- Error Boundary 実装
-- 非同期エラーの適切なハンドリング
-- ユーザーフレンドリーなエラーメッセージ
-- フォールバック UI 提供
-
-## 8. レビューチェックリスト（Codex PR用）
-
-### React 特有の確認事項
-- [ ] Hooks の依存配列が適切に設定されている
-- [ ] 不要な再レンダリングが発生していない
-- [ ] key prop がリストアイテムに設定されている
-- [ ] useEffect のクリーンアップが実装されている
-
-### TypeScript
-- [ ] 適切な型定義がされている
-- [ ] any 型の使用を避けている
-- [ ] Props の型が適切に定義されている
-- [ ] 未使用の import が削除されている
-
-### パフォーマンス
-- [ ] 高頻度で実行される処理の最適化
-- [ ] 不要な状態の分割・統合
-- [ ] 重いコンポーネントの遅延読み込み
-- [ ] バンドルサイズが適切
-
-### アクセシビリティ
-- [ ] 適切な見出しレベル（h1-h6）の使用
-- [ ] フォーカス管理の実装
-- [ ] 色以外の視覚的手がかりの提供
-- [ ] 適切な alt 属性の設定
-
-### テスト
-- [ ] ユーザー主導のテストアプローチ
-- [ ] エッジケースのテスト
-- [ ] モックの適切な使用
-- [ ] 非同期処理のテスト方法
-
-### CSS/スタイリング
-- [ ] レスポンシブデザインの実装
-- [ ] CSS-in-JS の適切な使用
-- [ ] スタイルの一貫性
-- [ ] 不要なスタイルの削除
+## Security considerations
+- Validate all user inputs and sanitize data display.
+- Use proper authentication context and route guards.
+- Implement proper CORS configuration for API calls.
+- Avoid storing sensitive data in local storage.
+- Use HTTPS in production and implement proper CSP headers.
+- Validate environment variables and API responses.

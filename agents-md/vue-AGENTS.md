@@ -1,230 +1,181 @@
-# AGENTS.md - Vue.js Project
+# AGENTS.md - Vue.js Project Contributor Guide
 
-## はじめに
-このプロジェクトはVue.js 3、Composition API、TypeScript、Viteを使用しています。OpenAI Codexは以下のガイドラインに従ってタスクを実行してください。
+Welcome to this Vue.js project repository. This file contains the main points for new contributors and AI assistants working with Vue.js 3/Composition API/TypeScript projects.
 
-## 1. コードベースのナビゲーションとアーキテクチャ
+## Repository overview
+- **Source code**: `src/` contains components, composables, stores, and utilities.
+- **Components**: `src/components/` with base and feature-specific directories.
+- **Composables**: `src/composables/` for reusable Composition API logic.
+- **Stores**: `src/stores/` for Pinia state management.
+- **Router**: `src/router/` for Vue Router configuration and guards.
+- **Services**: `src/services/` for API communication and external integrations.
+- **Tests**: `tests/` with unit and e2e test directories.
 
-### ディレクトリ構造
-```
-project-root/
-├── src/
-│   ├── components/
-│   │   ├── base/        # 基本UIコンポーネント
-│   │   └── feature/     # 機能別コンポーネント
-│   ├── composables/     # Composition API再利用ロジック
-│   ├── stores/          # Pinia ストア
-│   ├── router/          # Vue Router設定
-│   ├── services/        # API通信サービス
-│   ├── types/           # TypeScript型定義
-│   ├── utils/           # ユーティリティ関数
-│   ├── styles/          # グローバルスタイル
-│   ├── App.vue          # メインアプリコンポーネント
-│   └── main.ts          # エントリーポイント
-├── public/              # 静的ファイル
-└── tests/
-    ├── unit/            # 単体テスト
-    └── e2e/             # E2Eテスト
-```
+## Local workflow
+1. Install dependencies and set up environment:
+   ```bash
+   npm install               # Install dependencies
+   cp .env.example .env      # Set up environment variables
+   npm run dev               # Start development server
+   ```
 
-### アーキテクチャパターン
-- Composition API 優先使用
-- Single File Components (.vue)
-- Pinia による状態管理
-- Vue Router による SPA ルーティング
-- Composables による再利用ロジック抽出
+2. Format, lint and type-check your changes:
+   ```bash
+   npm run format            # Prettier formatting
+   npm run lint              # ESLint with Vue-specific rules
+   npm run type-check        # TypeScript checking
+   ```
 
-## 2. コードスタイルとフォーマット
+3. Run the tests:
+   ```bash
+   npm test                  # Run all tests
+   npm run test:unit         # Unit tests only
+   npm run test:e2e          # End-to-end tests with Playwright
+   npm run coverage          # Generate coverage report
+   ```
 
-### Vue.js スタイル（Vue Style Guide準拠）
-- Prettier でフォーマット
-- ESLint + @vue/typescript-recommended で構文チェック
-- 命名規則:
-  - コンポーネント: PascalCase（UserProfile.vue）
-  - ファイル名: PascalCase（UserProfile.vue）
-  - Props: camelCase（userName）
-  - イベント: kebab-case（@update-user）
-  - Composables: useXxx（useUserData）
+4. Build and analyze:
+   ```bash
+   npm run build             # Production build
+   npm run preview           # Preview production build
+   npm run analyze           # Bundle size analysis
+   ```
 
-### Vue Template 規則
-- v-for には key 必須
-- v-if と v-for の同時使用避ける
-- イベントハンドラーは明示的
-- slot の適切な活用
-
-### 実行コマンド
+## Testing guidelines
+Use Vitest with Vue Test Utils for component testing:
 ```bash
-npm run format     # Prettier実行
-npm run lint       # ESLint実行
-npm run type-check # TypeScriptチェック
+npm run test:watch          # Watch mode for development
+npm run test:ui             # Visual test interface
+npm run test:coverage       # Coverage with threshold checking
 ```
+- Test components using user-centric approaches with Testing Library
+- Test composables in isolation from components
+- Test Pinia stores with proper mocking
+- Include tests for reactive behavior and lifecycle
+- Test router navigation and guards
 
-## 3. テストプロトコル
+## Style notes
+- Use Composition API with `<script setup>` syntax for all components.
+- Prefer composables for reusable logic over mixins.
+- Use proper ref/reactive for state management.
+- Follow Vue Style Guide conventions for component organization.
+- Use TypeScript with proper typing for props, emits, and template refs.
 
-### テスト構成
-- Vitest：テストランナー
-- Vue Test Utils：Vue コンポーネントテスト
-- Testing Library：ユーザー中心テスト
-- Playwright：E2Eテスト
-
-### テスト規則
-- 全 public コンポーネントにテスト作成
-- Composables の単体テスト実装
-- Pinia ストアのテスト作成
-- 重要なユーザーフローの E2E テスト
-
-### 実行コマンド
-```bash
-npm test           # 全テスト実行
-npm run test:unit  # 単体テスト
-npm run test:e2e   # E2Eテスト
-npm run coverage   # カバレッジ確認
-```
-
-## 4. ビルドプロセスと環境設定
-
-### 環境変数
-- `.env` ファイルで管理
-- `VITE_` プレフィックス必須
-- 環境別設定ファイル（.env.development, .env.production）
-
-### 実行コマンド
-```bash
-npm run dev        # 開発サーバー起動
-npm run build      # 本番ビルド
-npm run preview    # ビルド結果プレビュー
-npm run analyze    # バンドルサイズ分析
-```
-
-## 5. コミットメッセージ規約
-
-### フォーマット（Conventional Commits）
+## Commit message format
+Use conventional commit format:
 ```
 type(scope): description
 
-feat(auth): implement user login with composables
-fix(router): resolve navigation guard issue
-style(components): update button variants
-refactor(stores): optimize user store actions
-test(composables): add useUserData tests
-docs(guide): update composables usage
+Examples:
+feat(auth): implement user login with Pinia store
+fix(router): resolve navigation guard timing issue
+perf(components): optimize UserList with virtual scrolling
+refactor(composables): extract common API logic to useApi
+test(stores): add comprehensive user store tests
+style(components): update design system spacing
 ```
 
-## 6. プルリクエスト（PR）指示
+## Pull request expectations
+PRs should include:
+- **Summary**: Clear description of functionality and user impact
+- **Reactivity impact**: How changes affect Vue's reactivity system
+- **Performance considerations**: Impact on component re-rendering and reactivity
+- **Screenshots/Videos**: Visual proof of UI changes and interactions
+- **Accessibility**: Keyboard navigation and screen reader compatibility
 
-### PRタイトル形式
-- `[feat] Add shopping cart with Pinia`
-- `[fix] Resolve reactive data update issue`
+Before submitting, ensure:
+- [ ] All tests pass (`npm test`)
+- [ ] TypeScript compilation succeeds (`npm run type-check`)
+- [ ] ESLint passes (`npm run lint`)
+- [ ] Vue DevTools shows proper component structure
+- [ ] Reactivity works as expected in all scenarios
+- [ ] Components are properly accessible
+- [ ] No memory leaks in reactive references
 
-### PR説明テンプレート
-```markdown
-## 変更内容
-- 実装・修正された機能の詳細
+## What reviewers look for
+- **Composition API usage**: Proper use of ref, reactive, computed, and watch.
+- **Component design**: Single File Component structure and organization.
+- **Reactivity patterns**: Efficient reactive data management and avoiding common pitfalls.
+- **Store management**: Proper Pinia store design and state management.
+- **Performance**: Optimized rendering and appropriate use of Vue 3 features.
+- **Type safety**: Comprehensive TypeScript integration with Vue components.
 
-## スクリーンショット/動画
-- UI変更がある場合は必須
-- Composition API の Reactivity 動作確認
+## Vue 3 Composition API best practices
+- Use `<script setup>` syntax for cleaner component code.
+- Apply ref() for primitive values, reactive() for objects.
+- Use computed() for derived state, avoid unnecessary calculations.
+- Implement proper cleanup in composables and watchers.
+- Use defineProps and defineEmits with TypeScript for type safety.
+- Apply toRefs() when destructuring reactive objects.
 
-## パフォーマンス影響
-- リアクティブシステムへの影響
-- メモリ使用量の変化
+## Reactivity system guidelines
+- Understand ref vs reactive and use appropriately.
+- Use readonly() for immutable reactive data.
+- Apply unref() to safely access ref values.
+- Implement proper reactive transformations with toRef/toRefs.
+- Avoid losing reactivity through destructuring.
+- Use watchEffect vs watch based on dependency tracking needs.
 
-## チェックリスト
-- [ ] Composition API 適切使用確認
-- [ ] Reactivity 動作確認
-- [ ] TypeScript型チェック通過
-- [ ] Vue DevTools での確認
-- [ ] スロットとプロパティのテスト
+## Composables best practices
+- Create reusable logic with clear interfaces.
+- Return reactive objects or refs consistently.
+- Implement proper lifecycle management (cleanup).
+- Use dependency injection pattern for flexibility.
+- Document composable APIs clearly.
+- Test composables independently of components.
 
-## Breaking Changes
-- [ ] API 変更あり
-- [ ] Props/Events 変更あり
+## Pinia state management
+- Design stores with clear responsibilities.
+- Use getters for computed store values.
+- Implement actions for state mutations and async operations.
+- Apply store composition for complex state relationships.
+- Use store subscription for reactive side effects.
+- Test stores with proper mocking strategies.
 
-## Closes
-- Fixes #issue_number
-```
+## Vue Router integration
+- Use named routes for better maintainability.
+- Implement navigation guards for authentication and authorization.
+- Use route meta fields for configuration.
+- Apply dynamic route matching appropriately.
+- Implement proper error handling for route failures.
+- Use router composition API in components.
 
-## 7. プロジェクト全般のガイドライン
+## Component architecture
+- Follow Single File Component conventions.
+- Use slots for flexible component composition.
+- Implement proper prop validation with TypeScript.
+- Use custom events for parent-child communication.
+- Apply provide/inject for deep component trees.
+- Create reusable components with clear APIs.
 
-### Vue.js 3 ベストプラクティス
-- Composition API 優先使用
-- `<script setup>` 記法の活用
-- ref/reactive の適切な使い分け
-- computed の無駄な再計算防止
-- watchEffect/watch の適切な使用
+## Performance optimization
+- Use v-memo for expensive list rendering.
+- Implement KeepAlive for component state preservation.
+- Apply async components with defineAsyncComponent.
+- Use shallow reactive objects when appropriate.
+- Optimize computed properties to avoid unnecessary calculations.
+- Monitor reactivity performance with Vue DevTools.
 
-### Reactivity システム
-- ref（プリミティブ値）
-- reactive（オブジェクト）
-- readonly（読み取り専用）
-- toRefs（reactive から ref への変換）
-- unref（ref 値の展開）
+## TypeScript integration
+- Define proper interfaces for component props and emits.
+- Use generic types for flexible component APIs.
+- Implement proper typing for template refs.
+- Apply type assertions carefully and sparingly.
+- Use Vue's built-in TypeScript utilities.
+- Test TypeScript integration thoroughly.
 
-### パフォーマンス最適化
-- v-memo による条件メモ化
-- KeepAlive による状態保持
-- 非同期コンポーネント（defineAsyncComponent）
-- lazy loading ルート設定
-- Pinia での selectory アクセス
+## Accessibility guidelines
+- Use semantic HTML in component templates.
+- Implement proper ARIA attributes for complex components.
+- Ensure keyboard navigation works for all interactive elements.
+- Test with screen readers and assistive technologies.
+- Maintain proper focus management in single-page navigation.
+- Use Vue's built-in accessibility helpers appropriately.
 
-### 状態管理（Pinia）
-- ストアの適切な分割
-- getters の活用
-- actions による状態変更
-- store subscription の使用
-
-### ルーティング（Vue Router）
-- 名前付きルート使用
-- ナビゲーションガードの実装
-- ルートメタ情報の活用
-- 動的ルート設定
-
-### TypeScript統合
-- defineComponent with TypeScript
-- Props の型定義
-- emit の型定義
-- Template refs の型付け
-
-## 8. レビューチェックリスト（Codex PR用）
-
-### Vue.js 特有の確認事項
-- [ ] Composition API が適切に使用されている
-- [ ] リアクティブな参照が正しく設定されている
-- [ ] v-model の使用が適切
-- [ ] カスタムイベントが適切に emit されている
-
-### Template 品質
-- [ ] 適切な key 属性設定
-- [ ] v-if/v-show の使い分け
-- [ ] スロットの活用
-- [ ] 条件分岐とループの最適化
-
-### Composition API
-- [ ] setup関数の適切な構成
-- [ ] ref/reactive の適切な使い分け
-- [ ] computed/watch の効率的な使用
-- [ ] lifecycle hooks の適切な配置
-
-### Pinia（状態管理）
-- [ ] ストア設計の妥当性
-- [ ] getters の効率的な実装
-- [ ] actions の副作用管理
-- [ ] ストア間の依存関係
-
-### TypeScript
-- [ ] Props/emit の型定義
-- [ ] Composables の型安全性
-- [ ] Template refs の型付け
-- [ ] 未使用の型・変数削除
-
-### パフォーマンス
-- [ ] 不要な再レンダリング防止
-- [ ] computed の無効な依存関係確認
-- [ ] メモリリークの可能性確認
-- [ ] 大きなリストの仮想化検討
-
-### アクセシビリティ
-- [ ] セマンティックHTML使用
-- [ ] ARIA属性の適切な設定
-- [ ] フォーカス管理
-- [ ] キーボードナビゲーション
+## Security considerations
+- Validate all user inputs and sanitize data display.
+- Use proper authentication state management.
+- Implement CSRF protection for form submissions.
+- Avoid using v-html with untrusted content.
+- Secure API endpoints and validate responses.
+- Use environment variables for sensitive configuration.

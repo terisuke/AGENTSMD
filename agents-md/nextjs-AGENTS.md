@@ -1,181 +1,164 @@
-# AGENTS.md - Next.js Project
+# AGENTS.md - Next.js Project Contributor Guide
 
-## はじめに
-このプロジェクトはNext.js、TypeScript、Tailwind CSSを使用しています。OpenAI Codexは以下のガイドラインに従ってタスクを実行してください。
+Welcome to this Next.js project repository. This file contains the main points for new contributors and AI assistants working with Next.js/TypeScript projects.
 
-## 1. コードベースのナビゲーションとアーキテクチャ
+## Repository overview
+- **App directory**: `app/` contains pages, layouts, and API routes (App Router).
+- **Components**: `components/` with ui and feature-specific directories.
+- **Library**: `lib/` for utilities, validations, and configuration.
+- **Public assets**: `public/` for static files, images, and icons.
+- **Types**: `types/` for TypeScript type definitions.
+- **Configuration**: `next.config.js`, `tailwind.config.js`, and environment files.
 
-### ディレクトリ構造（App Router）
-```
-project-root/
-├── app/
-│   ├── (auth)/          # ルートグループ
-│   ├── api/             # API Routes
-│   ├── globals.css      # グローバルスタイル
-│   ├── layout.tsx       # ルートレイアウト
-│   └── page.tsx         # ホームページ
-├── components/
-│   ├── ui/              # 再利用可能UIコンポーネント
-│   └── features/        # 機能別コンポーネント
-├── lib/
-│   ├── utils.ts         # ユーティリティ関数
-│   └── validations.ts   # Zodスキーマ
-├── public/              # 静的ファイル
-└── types/               # TypeScript型定義
-```
+## Local workflow
+1. Install dependencies and set up environment:
+   ```bash
+   npm install               # Install dependencies
+   cp .env.example .env.local # Set up environment variables
+   npm run dev               # Start development server
+   ```
 
-### アーキテクチャパターン
-- App Router を使用（Server Components基本）
-- コンポーネント設計: Atomic Design
-- 状態管理: React Context + Zustand（必要時）
-- スタイリング: Tailwind CSS + shadcn/ui
+2. Format, lint and type-check your changes:
+   ```bash
+   npm run format            # Prettier formatting
+   npm run lint              # ESLint with Next.js rules
+   npm run type-check        # TypeScript checking
+   ```
 
-## 2. コードスタイルとフォーマット
+3. Run the tests:
+   ```bash
+   npm test                  # Run all tests
+   npm run test:watch        # Watch mode for development
+   npm run test:e2e          # End-to-end tests with Playwright
+   npm run coverage          # Generate coverage report
+   ```
 
-### TypeScript/JavaScript
-- Prettier でフォーマット
-- ESLint で構文チェック
-- TypeScript Strict モード有効
-- 命名規則:
-  - ファイル名: kebab-case（auth-form.tsx）
-  - コンポーネント: PascalCase（AuthForm）
-  - 関数・変数: camelCase（getUserData）
-  - 定数: UPPER_SNAKE_CASE（API_BASE_URL）
+4. Build and analyze:
+   ```bash
+   npm run build             # Production build with optimization
+   npm run start             # Start production server
+   npm run analyze           # Bundle analyzer for optimization
+   ```
 
-### 実行コマンド
+## Testing guidelines
+Use Jest with Testing Library for component testing:
 ```bash
-npm run format     # Prettier実行
-npm run lint       # ESLint実行
-npm run type-check # TypeScriptチェック
+npm run test:watch          # Interactive development mode
+npm run test:e2e            # Full application flow testing
+npm run lighthouse          # Performance and accessibility audit
 ```
+- Test pages and components with realistic data scenarios
+- Use MSW for API route mocking in tests
+- Test both client and server components appropriately
+- Include SEO and accessibility in critical path tests
+- Test responsive behavior across different viewport sizes
 
-## 3. テストプロトコル
+## Style notes
+- Use Server Components by default, Client Components only when necessary.
+- Implement proper TypeScript types for all props and API responses.
+- Use Next.js Image component for all images for automatic optimization.
+- Follow file-based routing conventions with proper naming.
+- Prefer async/await for server-side data fetching.
 
-### テスト構成
-- Jest + Testing Library（コンポーネントテスト）
-- Playwright（E2Eテスト）
-- Vitest（軽量ユニットテスト）
-
-### テスト規則
-- 新しいコンポーネントにはテストを必須作成
-- Public APIに対する結合テスト
-- 重要なユーザーフローのE2Eテスト
-
-### 実行コマンド
-```bash
-npm test           # 全テスト実行
-npm run test:watch # ウォッチモード
-npm run test:e2e   # E2Eテスト
-npm run coverage   # カバレッジ確認
-```
-
-## 4. ビルドプロセスと環境設定
-
-### 環境変数
-- `.env.local` ファイルで管理
-- `NEXT_PUBLIC_` プレフィックス（クライアント側）
-- `DATABASE_URL`, `NEXTAUTH_SECRET`など
-
-### 実行コマンド
-```bash
-npm run dev        # 開発サーバー起動
-npm run build      # 本番ビルド
-npm run start      # 本番サーバー起動
-npm run analyze    # バンドルサイズ分析
-```
-
-## 5. コミットメッセージ規約
-
-### フォーマット（Conventional Commits）
+## Commit message format
+Use conventional commit format:
 ```
 type(scope): description
 
-feat(auth): add OAuth login with Google
-fix(ui): resolve mobile navigation issue
-style(components): update button variants
-refactor(api): optimize user data fetching
-test(auth): add login form unit tests
-docs(readme): update installation guide
+Examples:
+feat(auth): implement OAuth login with NextAuth
+fix(seo): resolve missing metadata for product pages
+perf(images): optimize hero section image loading
+refactor(api): migrate to App Router API routes
+test(pages): add comprehensive home page functionality tests
+style(ui): update design system with new brand colors
 ```
 
-## 6. プルリクエスト（PR）指示
+## Pull request expectations
+PRs should include:
+- **Summary**: Clear description of functionality and user experience impact
+- **Performance impact**: Core Web Vitals changes and lighthouse scores
+- **SEO considerations**: Metadata, structured data, and accessibility improvements
+- **Screenshots**: Visual verification across different devices and browsers
+- **API changes**: Documentation of any new or modified API routes
 
-### PRタイトル形式
-- `[feat] Add user authentication flow`
-- `[fix] Resolve hydration mismatch error`
+Before submitting, ensure:
+- [ ] All tests pass (`npm test`)
+- [ ] Build succeeds without errors (`npm run build`)
+- [ ] TypeScript compilation passes (`npm run type-check`)
+- [ ] Lighthouse scores are acceptable (90+ recommended)
+- [ ] Pages are responsive and work across major browsers
+- [ ] API routes are properly typed and tested
+- [ ] Environment variables are documented in `.env.example`
 
-### PR説明テンプレート
-```markdown
-## 変更内容
-- 概要説明
+## What reviewers look for
+- **Next.js patterns**: Proper use of App Router, Server/Client Components, and routing.
+- **Performance**: Core Web Vitals optimization and efficient data fetching.
+- **SEO**: Proper metadata, structured data, and accessibility implementation.
+- **Security**: Proper authentication, input validation, and API security.
+- **User experience**: Responsive design, loading states, and error handling.
+- **Type safety**: Comprehensive TypeScript usage with minimal `any` types.
 
-## 変更理由
-- なぜこの変更が必要か
+## Next.js App Router best practices
+- Use Server Components by default for better performance.
+- Implement `'use client'` directive only when necessary (interactivity, hooks).
+- Use proper loading.tsx and error.tsx files for better UX.
+- Implement proper metadata generation for SEO.
+- Use Suspense boundaries for optimal loading experiences.
+- Leverage parallel and intercepting routes for advanced patterns.
 
-## スクリーンショット
-- UI変更の場合は必須
+## Data fetching strategies
+- Use Server Components for initial data loading.
+- Implement proper caching strategies with fetch options.
+- Use React Query/SWR for client-side data management.
+- Apply proper error handling for both server and client fetching.
+- Implement optimistic updates for better user experience.
+- Cache expensive operations appropriately.
 
-## テスト
-- 実施したテスト内容
-- 動作確認環境
+## Performance optimization
+- Optimize Core Web Vitals (LCP, FID, CLS).
+- Use Next.js Image component with proper sizing and formats.
+- Implement code splitting with dynamic imports.
+- Optimize fonts with next/font for performance.
+- Use proper caching headers for static assets.
+- Monitor and optimize bundle size regularly.
 
-## チェックリスト
-- [ ] テストが通ることを確認
-- [ ]型エラーがないことを確認
-- [ ] レスポンシブ対応確認
-- [ ] パフォーマンステスト実施
+## SEO and accessibility
+- Implement comprehensive metadata for all pages.
+- Use proper heading hierarchy (h1, h2, h3, etc.).
+- Add structured data (JSON-LD) for rich snippets.
+- Ensure keyboard navigation and screen reader compatibility.
+- Implement proper Open Graph and Twitter Card meta tags.
+- Use semantic HTML and ARIA attributes where needed.
 
-## Closes
-- Fixes #issue_number
-```
+## API routes best practices
+- Use proper HTTP methods and status codes.
+- Implement comprehensive input validation.
+- Add proper error handling and logging.
+- Use middleware for cross-cutting concerns (auth, CORS).
+- Implement rate limiting for protection.
+- Document API endpoints with proper TypeScript types.
 
-## 7. プロジェクト全般のガイドライン
+## Authentication and security
+- Use NextAuth.js for authentication when applicable.
+- Implement proper CSRF protection.
+- Validate all inputs on both client and server sides.
+- Use proper session management and JWT handling.
+- Implement role-based access control where needed.
+- Secure API routes with proper middleware.
 
-### Next.js ベストプラクティス
-- Server Components を優先使用
-- `'use client'` は必要最小限で使用
-- 画像は `next/image` を使用（最適化）
-- 動的インポートでコード分割実装
-- Suspense使用でローディング状態管理
+## Styling and UI guidelines
+- Use Tailwind CSS with consistent utility classes.
+- Implement responsive design with mobile-first approach.
+- Use CSS modules or styled-components for component-specific styles.
+- Maintain design system consistency across components.
+- Implement proper dark mode support if required.
+- Optimize for both performance and maintainability.
 
-### パフォーマンス
-- Core Web Vitals の最適化
-- 不要な `useEffect`, `useState` の最小化
-- メモ化（useMemo, useCallback）の適切な使用
-- 画像最適化（WebP, lazy loading）
-
-### セキュリティ
-- CSRFプロテクション実装
-- 適切な認証・認可
-- 環境変数での機密情報管理
-- XSS対策（適切なサニタイゼーション）
-
-### UI/UX
-- モバイルファースト設計
-- アクセシビリティ（ARIA属性）
-- ローディング・エラー状態の適切な実装
-- Tailwind Utility Classes の統一的使用
-
-## 8. レビューチェックリスト（Codex PR用）
-
-### Next.js 特有の確認事項
-- [ ] Server/Client Components の適切な使い分け
-- [ ] App Router の規約に準拠
-- [ ] メタデータ（SEO）が適切に設定されている
-- [ ] Next.js の最適化機能を活用している
-
-### TypeScript
-- [ ] 型定義が適切に行われている
-- [ ] `any` 型の使用を避けている
-- [ ] 未使用のインポートが残っていない
-
-### スタイリング
-- [ ] Tailwind の utility classes を使用
-- [ ] レスポンシブデザインが実装されている
-- [ ] カスタムCSSが最小限に抑えられている
-
-### パフォーマンス
-- [ ] 不要な再レンダリングが発生していない
-- [ ] 適切なキーがリストアイテムに設定されている
-- [ ] 画像が最適化されている
-- [ ] バンドルサイズが適切
+## Environment and deployment
+- Use proper environment variable naming (NEXT_PUBLIC_ for client-side).
+- Implement different configurations for development/staging/production.
+- Use proper build optimization flags.
+- Implement proper monitoring and error tracking.
+- Set up proper CI/CD pipelines for automated testing and deployment.
+- Configure proper caching strategies for static assets.

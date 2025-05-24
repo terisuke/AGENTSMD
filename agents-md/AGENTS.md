@@ -1,131 +1,102 @@
-# AGENTS.md - General Project Template
+# AGENTS.md - Project Contributor Guide
 
-## はじめに
-このファイルはOpenAI Codexがプロジェクトのコンテキストとガイドラインを理解するためのドキュメントです。プロジェクトの構造、規約、ベストプラクティスに従ってタスクを実行してください。
+Welcome to this project repository. This file contains the main points for new contributors and AI assistants.
 
-## 1. コードベースのナビゲーションとアーキテクチャ
+## Repository overview
+- **Source code**: `src/` contains the main implementation.
+- **Tests**: `tests/` with testing guidelines and examples.
+- **Examples**: `examples/` directory for usage demonstrations.
+- **Documentation**: markdown files in `docs/` with configuration files.
+- **Configuration**: `config/` for environment and build settings.
+- **Scripts**: `scripts/` for build, deployment, and utility commands.
+- **PR template**: `.github/PULL_REQUEST_TEMPLATE/` contains the required PR format.
 
-### ディレクトリ構造
+## Local workflow
+1. Format, lint and type-check your changes:
+   ```bash
+   npm run format     # or: black . / ruff format .
+   npm run lint       # or: flake8 . / ruff check .
+   npm run typecheck  # or: mypy . / tsc --noEmit
+   ```
+
+2. Run the tests:
+   ```bash
+   npm test          # or: pytest / go test ./...
+   ```
+   To run a single test, use `npm test -- --grep "<test_name>"` or `pytest -k <test_name>`.
+
+3. Build the project (optional but recommended):
+   ```bash
+   npm run build     # or: python setup.py build / go build
+   ```
+   Generate test coverage with `npm run coverage` or `pytest --cov`.
+
+## Testing guidelines
+Tests should cover new functionality and edge cases. See `tests/README.md` for detailed guidelines:
+```bash
+npm run test:unit       # run unit tests
+npm run test:integration # run integration tests
+npm test:e2e           # run end-to-end tests
 ```
-project-root/
-├── src/           # ソースコード
-├── tests/         # テストファイル
-├── docs/          # ドキュメント
-├── config/        # 設定ファイル
-└── scripts/       # ビルド・デプロイスクリプト
-```
+Maintain minimum 80% test coverage for new code.
 
-### 主要なアーキテクチャパターン
-- レイヤードアーキテクチャを採用
-- 関心の分離を徹底
-- 依存性注入を活用
-- デザインパターンの適切な適用
+## Style notes
+- Write comments as full sentences and end them with a period.
+- Use meaningful variable and function names.
+- Follow the established naming conventions for the language.
+- Keep functions small and focused on a single responsibility.
+- Include type hints/annotations where applicable.
 
-## 2. コードスタイルとフォーマット
-
-### フォーマット規則
-- 言語に応じた標準フォーマッタを使用
-- 一貫したインデント（スペース）
-- 意味のある命名規則の採用
-- コメントは簡潔で説明的に
-
-### 実行コマンド
-- フォーマット: `npm run format` または `black .`
-- リンタ: `npm run lint` または `flake8 .`
-
-## 3. テストプロトコル
-
-### テスト規則
-- 新機能には必ずテストを作成
-- テストカバレッジ80%以上を維持
-- 単体テスト、結合テスト、E2Eテストを適切に実装
-
-### 実行コマンド
-- 全テスト実行: `npm test` または `pytest`
-- カバレッジ確認: `npm run coverage` または `pytest --cov`
-
-## 4. ビルドプロセスと環境設定
-
-### ビルド手順
-- 依存関係のインストール
-- 環境変数の設定
-- ビルドプロセスの実行
-- デプロイ準備
-
-### 実行コマンド
-- 開発環境: `npm run dev` または `python run.py`
-- 本番ビルド: `npm run build` または `python setup.py build`
-
-## 5. コミットメッセージ規約
-
-### フォーマット
+## Commit message format
+Use conventional commit format:
 ```
 type(scope): description
 
-- feat: 新機能
-- fix: バグ修正
-- docs: ドキュメント更新
-- style: フォーマット変更
-- refactor: リファクタリング
-- test: テスト追加・修正
-- chore: その他の変更
+Examples:
+feat(auth): add user authentication system
+fix(api): resolve null pointer exception in user service
+docs(readme): update installation instructions
+test(utils): add unit tests for helper functions
 ```
 
-### 例
-- `feat(auth): add user login functionality`
-- `fix(api): resolve null pointer exception`
+## Pull request expectations
+PRs should use the template in `.github/PULL_REQUEST_TEMPLATE/`. Include:
+- **Summary**: Clear description of changes and motivation
+- **Test plan**: How to verify the changes work correctly
+- **Issue reference**: Link to related issues if applicable
 
-## 6. プルリクエスト（PR）指示
+Before submitting, ensure:
+- [ ] New tests are added for new functionality
+- [ ] Documentation is updated for public API changes
+- [ ] All formatting and linting checks pass
+- [ ] Full test suite passes locally
+- [ ] Commit messages follow the conventional format
 
-### PRタイトル形式
-- `[Type] Brief description of changes`
+## What reviewers look for
+- **Test coverage**: Comprehensive tests for new behavior and edge cases.
+- **Code quality**: Consistent formatting, proper error handling, and clear logic.
+- **Documentation**: Updated docs for any public API or behavior changes.
+- **Security**: Input validation, proper authentication, and secure data handling.
+- **Performance**: Efficient algorithms and appropriate data structures.
+- **Maintainability**: Clean, readable code with appropriate abstractions.
 
-### PR説明テンプレート
-- 変更内容の概要
-- 変更理由
-- テスト方法
-- スクリーンショット（UI変更の場合）
-- 関連イシューへのリンク
+## Architecture guidelines
+- Follow the layered architecture pattern established in the codebase.
+- Maintain separation of concerns between different modules.
+- Use dependency injection where appropriate.
+- Prefer composition over inheritance.
+- Keep external dependencies minimal and well-justified.
 
-## 7. プロジェクト全般のガイドライン
+## Security considerations
+- Validate all user inputs at entry points.
+- Use parameterized queries to prevent SQL injection.
+- Implement proper authentication and authorization.
+- Never commit secrets or sensitive data to version control.
+- Follow secure coding practices for the target language/framework.
 
-### 開発原則
-- DRY（Don't Repeat Yourself）の原則
-- SOLID原則の遵守
-- セキュリティファーストの開発
-- パフォーマンスを意識した実装
-
-### 推奨事項
-- 既存ユーティリティの再利用を優先
-- 新しい依存関係導入前に議論
-- 大規模なリファクタリングはイシューで事前提案
-- コードレビューの積極的な実施
-
-## 8. レビューチェックリスト（Codex PR用）
-
-Codexが作成したPRのレビュー時に確認すべき項目：
-
-### 機能要件
-- [ ] 要求された機能が完全に実装されているか
-- [ ] エッジケースが適切に処理されているか
-- [ ] エラーハンドリングが適切に実装されているか
-
-### コード品質
-- [ ] コードスタイルがプロジェクト基準に準拠しているか
-- [ ] 命名規則が一貫しているか
-- [ ] 適切なコメント・ドキュメントが含まれているか
-
-### テスト
-- [ ] 新しい機能にテストが含まれているか
-- [ ] 既存テストが失敗していないか
-- [ ] テストカバレッジが維持されているか
-
-### セキュリティ
-- [ ] 入力値の検証が適切に行われているか
-- [ ] 認証・認可が適切に実装されているか
-- [ ] 機密情報の取り扱いが適切か
-
-### パフォーマンス
-- [ ] 不要な処理やループがないか
-- [ ] 適切なデータ構造が使用されているか
-- [ ] メモリリークの可能性がないか
+## Performance guidelines
+- Profile code for performance-critical sections.
+- Use appropriate data structures for the use case.
+- Implement caching strategies where beneficial.
+- Optimize database queries and minimize N+1 problems.
+- Consider memory usage and potential leaks.
